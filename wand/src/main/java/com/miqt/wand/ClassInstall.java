@@ -1,6 +1,8 @@
 package com.miqt.wand;
 
 
+import android.util.Log;
+
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,16 +25,26 @@ public class ClassInstall {
 
     private static void inject(Object host, Object object, Provider provider) {
         String className = host.getClass().getName();
+        Log.i("sanbo", "ClassInstall.inject   className: " + className);
+        Log.i("sanbo", "ClassInstall.inject   host: " + host + "----" + object + "----" + provider);
+
         try {
             SoftReference<Inject> reference = injectMap.get(className);
+            Log.i("sanbo", "ClassInstall.inject   injectMap： " + injectMap.toString());
             Inject inject = null;
             if (reference != null) {
                 inject = reference.get();
+            } else {
+                Log.i("sanbo", "ClassInstall.inject   reference is null ");
             }
             if (inject == null) {
                 Class<?> aClass = Wand.get().getContext().getClassLoader().loadClass(className + "$$ObjectInject");
+                Log.i("sanbo", "ClassInstall.inject aClass: " + aClass.toString());
                 inject = (Inject) aClass.newInstance();
+                Log.i("sanbo", "ClassInstall.inject " + className + "<--->" + inject);
                 injectMap.put(className, new SoftReference<>(inject));
+            } else {
+                Log.i("sanbo", "ClassInstall.inject inject is not null ");
             }
             inject.inject(host, object, provider);
         } catch (ClassNotFoundException e) {

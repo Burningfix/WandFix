@@ -16,6 +16,9 @@ import com.miqt.wand.anno.ParentalEntrustmentLevel;
 
 import java.io.File;
 
+/**
+ * @author sanbo
+ */
 public class MainActivity extends ProxyActivity implements Wand.MotorListener {
     ProgressDialog mDialog;
 

@@ -1,11 +1,12 @@
 package com.miqt.wand;
 
+import android.util.Log;
+
 import com.miqt.wand.anno.ParentalEntrustmentLevel;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +45,10 @@ public class ObjectFactory {
 
     public static <T> T invokeMethod(Object object, String classname, String methodName,
                                      ParentalEntrustmentLevel level, Object... pram) {
+
+
+        Log.i("sanbo", "----------------ObjectFactory.invokeMethod-------------11111----");
+
         if (classname == null || methodName == null || classname.length() == 0 || methodName.length() == 0) {
             return null;
         }
@@ -89,6 +94,9 @@ public class ObjectFactory {
     }
 
     public static <T> T make(String classname, ParentalEntrustmentLevel level, Object... pram) {
+        Log.i("sanbo", "----------------ObjectFactory.make--------classname： " + classname + "--- level: " + level);
+//        Log.d("sanbo", Log.getStackTraceString(new Exception("ObjectFactory.make")));
+
         if (classname == null || classname.length() == 0) {
             return null;
         }
@@ -112,6 +120,7 @@ public class ObjectFactory {
             }
             constructor.setAccessible(true);
             T o = constructor.newInstance(pram);
+            Log.i("sanbo", "----------------ObjectFactory.make-------------end----");
             return o;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

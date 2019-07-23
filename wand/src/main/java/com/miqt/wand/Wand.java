@@ -5,10 +5,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.miqt.wand.anno.ParentalEntrustmentLevel;
 import com.miqt.wand.utils.FileUtils;
+import com.miqt.wand.utils.L;
 import com.miqt.wand.utils.SPUtils;
 
 import java.io.File;
@@ -112,20 +112,20 @@ public class Wand {
         if (pack == null) {
             return;
         }
-        Log.i("sanbo", "-----attachPack---- 1111 ----- ");
+        L.i("-----attachPack---- 1111 ----- ");
 
         String dataDir = mContext.getCacheDir().getAbsolutePath();
         File file = null;
         if (!pack.getAbsolutePath().contains(dataDir) || mEncrypter != null) {
-            Log.i("sanbo", "-----attachPack---- 2222 ----- ");
+            L.i("-----attachPack---- 2222 ----- ");
 
             file = new File(getCachePath());
             FileUtils.copyFile(mEncrypter, mContext, pack.getAbsolutePath(), file.getAbsolutePath());
         } else {
-            Log.i("sanbo", "-----attachPack---- 3333 ----- ");
+            L.i("-----attachPack---- 3333 ----- ");
             file = pack;
         }
-        Log.i("sanbo", "extractFile: " + file.getAbsolutePath() + " ; dexpath: " + file.getPath());
+        L.i("extractFile: " + file.getAbsolutePath() + " ; dexpath: " + file.getPath());
         mClassLoader = new MyDexClassLoader(
                 file.getAbsolutePath(), mContext.getFilesDir().getAbsolutePath()
                 , null, mContext.getClassLoader());
@@ -151,7 +151,8 @@ public class Wand {
 
     public Class<?> loadClass(String classname, ParentalEntrustmentLevel level) throws ClassNotFoundException {
 
-        Log.i("sanbo", "-----loadClass--classname: " + classname + " ---- level: " + level);
+        L.i("Wand.loadClass--classname: " + classname + " ---- level: " + level);
+        L.i(new Exception("Wand.loadClass"));
 
         if (mClassLoader == null) {
             throw new IllegalStateException("Please initialize ‘wandfix’");

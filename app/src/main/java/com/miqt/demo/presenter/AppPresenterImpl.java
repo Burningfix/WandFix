@@ -4,7 +4,7 @@ package com.miqt.demo.presenter;
  * Created by miqt on 2019/2/18.
  */
 
-public class AppPresenterImpl implements AppPresenter {
+public class AppPresenterImpl {
     String name;
 
     public AppPresenterImpl(CharSequence name) {
@@ -22,7 +22,6 @@ public class AppPresenterImpl implements AppPresenter {
     public AppPresenterImpl() {
     }
 
-    @Override
     public String getStr() {
         return name.toLowerCase();
     }

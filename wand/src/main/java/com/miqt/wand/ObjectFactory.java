@@ -3,6 +3,7 @@ package com.miqt.wand;
 import android.util.Log;
 
 import com.miqt.wand.anno.ParentalEntrustmentLevel;
+import com.miqt.wand.utils.L;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -47,8 +48,7 @@ public class ObjectFactory {
                                      ParentalEntrustmentLevel level, Object... pram) {
 
 
-        Log.i("sanbo", "----------------ObjectFactory.invokeMethod-------------11111----");
-
+        L.i("inside ObjectFactory.invokeMethod----------object：" + object + "-----classname： " + classname + "----methodName: " + methodName + "----level: " + level);
         if (classname == null || methodName == null || classname.length() == 0 || methodName.length() == 0) {
             return null;
         }
@@ -57,15 +57,19 @@ public class ObjectFactory {
         }
         try {
             Class<T> ap = (Class<T>) Wand.get().loadClass(classname, level);
+            L.i("inside ObjectFactory.invokeMethod----------ap：" + ap.toString());
             Method[] methods = ap.getDeclaredMethods();
+            L.i("inside ObjectFactory.invokeMethod----------methods[" + methods.length + "]：" + ap.toString());
             Method method = null;
             for (int i = 0; i < methods.length; i++) {
                 if (methods[i].getName().equals(methodName)
                         && isFound(methods[i].getParameterTypes(), pram)) {
                     method = methods[i];
+                    L.i("inside ObjectFactory.invokeMethod----------isFound Method: " + method.toString());
                     break;
                 }
             }
+            L.i("inside ObjectFactory.invokeMethod----------result method: " + method.toString());
             if (method == null) {
                 throw new IllegalArgumentException("[" + classname + "." + methodName + "]" + "No function found corresponding to the parameter type");
             }
@@ -94,18 +98,23 @@ public class ObjectFactory {
     }
 
     public static <T> T make(String classname, ParentalEntrustmentLevel level, Object... pram) {
-        Log.i("sanbo", "----------------ObjectFactory.make--------classname： " + classname + "--- level: " + level);
-//        Log.d("sanbo", Log.getStackTraceString(new Exception("ObjectFactory.make")));
+        L.i("ObjectFactory.make--------classname： " + classname + "--- level: " + level);
 
         if (classname == null || classname.length() == 0) {
             return null;
         }
+
+        L.i("ObjectFactory.make----111----level： " + level);
         if (level == null) {
             level = ParentalEntrustmentLevel.NEVER;
         }
+        L.i("ObjectFactory.make----222----level： " + level);
+
         try {
             Class<T> ap = (Class<T>) Wand.get().loadClass(classname, level);
+            Log.i("sanbo", "ObjectFactory.make----------ap: " + ap.toString());
             Constructor<T>[] constructors = (Constructor<T>[]) ap.getDeclaredConstructors();
+            Log.i("sanbo", "ObjectFactory.make----------constructors[" + constructors.length + "]: " + constructors.toString());
             Constructor<T> constructor = null;
             for (int i = 0; i < constructors.length; i++) {
                 Class[] aClass = constructors[i].getParameterTypes();
@@ -115,12 +124,14 @@ public class ObjectFactory {
                     break;
                 }
             }
+            Log.i("sanbo", "ObjectFactory.make----------constructor: " + constructor);
+
             if (constructor == null) {
                 throw new IllegalArgumentException("[" + classname + "]" + "not has parameter type constructor");
             }
             constructor.setAccessible(true);
             T o = constructor.newInstance(pram);
-            Log.i("sanbo", "----------------ObjectFactory.make-------------end----");
+            Log.i("sanbo", "ObjectFactory.make-------------end----");
             return o;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

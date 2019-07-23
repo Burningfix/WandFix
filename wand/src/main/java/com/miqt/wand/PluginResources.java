@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.miqt.wand.anno.ParentalEntrustmentLevel;
+import com.miqt.wand.utils.L;
 
 /**
  * Created by miqt on 2019/2/21.
@@ -33,9 +34,11 @@ public class PluginResources {
     }
 
     private void init(String apkPath) {
+        L.i("-----PluginResources.init----apkPath:" + apkPath);
         mManager = ObjectFactory.make(AssetManager.class);
         int cookie = ObjectFactory.invokeMethod(mManager, AssetManager.class.getName(),
                 "addAssetPath", ParentalEntrustmentLevel.PROJECT, apkPath);
+        L.i("-----PluginResources.init----cookie:" + cookie);
         mResources = new Resources(mManager,
                 context.getResources().getDisplayMetrics(),
                 context.getResources().getConfiguration());

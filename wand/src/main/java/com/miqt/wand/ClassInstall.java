@@ -3,6 +3,8 @@ package com.miqt.wand;
 
 import android.util.Log;
 
+import com.miqt.wand.utils.L;
+
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class ClassInstall {
     private static final Map<String, SoftReference<Inject>> injectMap = new HashMap<>();
 
     public static void inject(Object o) {
+        L.v(new Exception("ClassInstall.inject"));
         inject(o, null, activityProvider);
     }
 
